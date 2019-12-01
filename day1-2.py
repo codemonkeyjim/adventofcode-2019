@@ -4,7 +4,10 @@ from math import trunc
 
 
 def fuel_needed(mass: int) -> int:
-    return trunc(mass / 3) - 2
+    fuel = trunc(mass / 3) - 2
+    if fuel <= 0:
+        return 0
+    return fuel + fuel_needed(fuel)
 
 
 if __name__ == '__main__':
