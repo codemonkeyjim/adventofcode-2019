@@ -28,19 +28,15 @@ class Point(object):
 
     def points_between(self, other) -> List[Point]:
         if self.x == other.x:
-            y_range = (
-                range(self.y, other.y + 1)
-                if self.y < other.y
-                else range(other.y, self.y + 1)
-            )
-            return [Point(self.x, y) for y in y_range]
+            step = 1 if self.y < other.y else -1
+            return [
+                Point(self.x, y) for y in range(self.y + step, other.y + step, step)
+            ]
         elif self.y == other.y:
-            x_range = (
-                range(self.x, other.x + 1)
-                if self.x < other.x
-                else range(other.x, self.x + 1)
-            )
-            return [Point(x, self.y) for x in x_range]
+            step = 1 if self.x < other.x else -1
+            return [
+                Point(x, self.y) for x in range(self.x + step, other.x + step, step)
+            ]
         else:
             raise ValueError("Points must lie on a line parallel with an axis")
 
