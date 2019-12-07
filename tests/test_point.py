@@ -15,19 +15,19 @@ def test_point_equivalence():
         (
             Point(0, 0),
             Point(0, 3),
-            {Point(0, 0), Point(0, 1), Point(0, 2), Point(0, 3)},
+            [Point(0, 0), Point(0, 1), Point(0, 2), Point(0, 3)],
         ),
         (
             Point(0, 0),
             Point(3, 0),
-            {Point(0, 0), Point(1, 0), Point(2, 0), Point(3, 0)},
+            [Point(0, 0), Point(1, 0), Point(2, 0), Point(3, 0)],
         ),
-        (Point(-1, 1), Point(1, 1), {Point(-1, 1), Point(0, 1), Point(1, 1)}),
+        (Point(-1, 1), Point(1, 1), [Point(-1, 1), Point(0, 1), Point(1, 1)]),
     ],
 )
 def test_points_between(source, dest, expected):
     result = source.points_between(dest)
-    assert isinstance(result, set)
+    assert isinstance(result, list)
     assert result == expected
 
 

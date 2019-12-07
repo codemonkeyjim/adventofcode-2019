@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import List
 
 
 class Point(object):
@@ -21,27 +22,23 @@ class Point(object):
     def __str__(self):
         return f"({self.x}, {self.y})"
 
-    def points_between(self, other) -> Set[Point]:
-        points = set()
+    def points_between(self, other) -> List[Point]:
         if self.x == other.x:
             y_range = (
                 range(self.y, other.y + 1)
                 if self.y < other.y
                 else range(other.y, self.y + 1)
             )
-            for y in y_range:
-                points.add(Point(self.x, y))
+            return [Point(self.x, y) for y in y_range]
         elif self.y == other.y:
             x_range = (
                 range(self.x, other.x + 1)
                 if self.x < other.x
                 else range(other.x, self.x + 1)
             )
-            for x in x_range:
-                points.add(Point(x, self.y))
+            return [Point(x, self.y) for x in x_range]
         else:
             raise ValueError("Points must lie on a line parallel with an axis")
-        return points
 
     def manhattan(self, other=None) -> int:
         if other is None:
