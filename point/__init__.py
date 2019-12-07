@@ -11,7 +11,11 @@ class Point(object):
         return self.x == other.x and self.y == other.y
 
     def __add__(self, other):
-        return Point(self.x + other.x, self.y + other.y)
+        if isinstance(other, Point):
+            return Point(self.x + other.x, self.y + other.y)
+        if isinstance(other, str):
+            return self._string_add(other)
+        raise TypeError(f"Cannot add type {type(other)} to {type(self)}")
 
     def __hash__(self):
         return hash((self.x, self.y))
@@ -44,3 +48,18 @@ class Point(object):
         if other is None:
             other = Point(0, 0)
         return abs(self.x - other.x) + abs(self.y - other.y)
+
+    def _string_add(self, step):
+        direction = step[0]
+        magnitude = int(step[1:])
+        if "U" == direction:
+            vector = Point(0, magnitude)
+        elif "D" == direction:
+            vector = Point(0, -magnitude)
+        elif "L" == direction:
+            vector = Point(-magnitude, 0)
+        elif "R" == direction:
+            vector = Point(magnitude, 0)
+        else:
+            raise ValueError(f"Unknown direction '{direction}'")
+        return self + vector

@@ -11,19 +11,7 @@ def wire_to_points(wire: str) -> List[Point]:
     points = [current]
 
     for step in wire.split(","):
-        direction = step[0]
-        magnitude = int(step[1:])
-        if "U" == direction:
-            vector = Point(0, magnitude)
-        elif "D" == direction:
-            vector = Point(0, -magnitude)
-        elif "L" == direction:
-            vector = Point(-magnitude, 0)
-        elif "R" == direction:
-            vector = Point(magnitude, 0)
-        else:
-            raise ValueError(f"Unknown direction '{direction}'")
-        next_point = current + vector
+        next_point = current + step
         points += current.points_between(next_point)
         current = next_point
     return points

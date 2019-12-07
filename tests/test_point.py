@@ -10,6 +10,30 @@ def test_point_equivalence():
 
 
 @pytest.mark.parametrize(
+    "source, vector, expected",
+    [
+        (Point(0, 0), Point(2, 3), Point(2, 3)),
+        (Point(-1, -2), Point(2, 3), Point(1, 1)),
+    ],
+)
+def test_point_point_addition(source, vector, expected):
+    assert source + vector == expected
+
+
+@pytest.mark.parametrize(
+    "source, step, expected",
+    [
+        (Point(0, 0), "U10", Point(0, 10)),
+        (Point(2, 3), "D5", Point(2, -2)),
+        (Point(-2, 3), "L3", Point(-5, 3)),
+        (Point(-2, 3), "R5", Point(3, 3)),
+    ],
+)
+def test_point_string_addition(source, step, expected):
+    assert source + step == expected
+
+
+@pytest.mark.parametrize(
     "source, dest, expected",
     [
         (
