@@ -30,6 +30,7 @@ class Intcode(object):
         return val_or_loc if immediate else self.program[val_or_loc]
 
     def execute(self):
+        retval = None  # Return the last value outputted for testing purposes
         while True:
             opcode, modes = self._interpret()
             if opcode == 99:
@@ -51,3 +52,5 @@ class Intcode(object):
             elif opcode == 4:  # Output
                 val = self.get_value(self.next(), modes[0])
                 print(f"Line {self.pointer - 1}: {val}")
+                retval = val
+        return retval

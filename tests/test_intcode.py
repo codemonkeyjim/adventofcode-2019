@@ -1,3 +1,4 @@
+import mock
 import pytest
 
 from intcode import Intcode
@@ -38,3 +39,11 @@ def test_program_execution(program, location, value):
     interpreter = Intcode(program)
     interpreter.execute()
     assert interpreter.program[location] == value
+
+
+@pytest.mark.parametrize("input_str", ["1", "5", "-1"])
+def test_input_output_instruction(input_str):
+    program = "3,0,4,0,99"  # Output the input
+    interpreter = Intcode(program)
+    with mock.patch("builtins.input", side_effect=[input_str]):
+        assert interpreter.execute() == int(input_str)
