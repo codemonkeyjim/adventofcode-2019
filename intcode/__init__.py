@@ -53,4 +53,18 @@ class Intcode(object):
                 val = self.get_value(self.next(), modes[0])
                 print(f"Line {self.pointer - 1}: {val}")
                 retval = val
+            elif opcode in (5, 6):  # Jump if...
+                cond = self.get_value(self.next(), modes[0])
+                loc = self.get_value(self.next(), modes[1])
+                if (opcode == 5 and cond != 0) or (opcode == 6 and cond == 0):
+                    self.pointer = loc
+            elif opcode in (7, 8):  # Compare
+                a = self.get_value(self.next(), modes[0])
+                b = self.get_value(self.next(), modes[1])
+                loc = self.next()
+                self.program[loc] = int(
+                    (opcode == 7 and a < b) or (opcode == 8 and a == b)
+                )
+            else:
+                raise ValueError(f"Unknown opcode {opcode} at {self.pointer - 1}")
         return retval

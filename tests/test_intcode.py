@@ -47,3 +47,38 @@ def test_input_output_instruction(input_str):
     interpreter = Intcode(program)
     with mock.patch("builtins.input", side_effect=[input_str]):
         assert interpreter.execute() == int(input_str)
+
+
+@pytest.mark.parametrize(
+    "program,input_str,output_int",
+    [
+        ("3,9,8,9,10,9,4,9,99,-1,8", 8, 1),  # Is input equal to 8 (positional)
+        ("3,9,8,9,10,9,4,9,99,-1,8", 7, 0),
+        ("3,9,7,9,10,9,4,9,99,-1,8", 7, 1),  # Is input less than 8 (positional)
+        ("3,9,7,9,10,9,4,9,99,-1,8", 9, 0),
+        ("3,3,1108,-1,8,3,4,3,99", 8, 1),  # Is input equal to 8 (immediate)
+        ("3,3,1108,-1,8,3,4,3,99", 7, 0),
+        ("3,3,1107,-1,8,3,4,3,99", 7, 1),  # Is input less than 8 (immediate)
+        ("3,3,1107,-1,8,3,4,3,99", 9, 0),
+        # Is input equal to 0 (positional, jumps)
+        ("3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9", 0, 0),
+        ("3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9", 3, 1),
+        # Is input equal to 0 (immediate, jumps)
+        ("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", 0, 0),
+        ("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", 3, 1),
+    ],
+)
+def test_comparison_instructions(program, input_str, output_int):
+    interpreter = Intcode(program)
+    with mock.patch("builtins.input", side_effect=[input_str]):
+        assert interpreter.execute() == output_int
+
+
+@pytest.mark.parametrize(
+    "input_str,output_int", [(3, 999), (8, 1000), (10, 1001)],
+)
+def test_longer_program(input_str, output_int):
+    program = "3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99"
+    interpreter = Intcode(program)
+    with mock.patch("builtins.input", side_effect=[input_str]):
+        assert interpreter.execute() == output_int
