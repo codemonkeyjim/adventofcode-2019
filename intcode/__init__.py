@@ -6,8 +6,10 @@ class Intcode(object):
     OPCODE_LEN = 2
     PARAM_LEN = INSTRUCTION_LEN - OPCODE_LEN
 
-    def __init__(self, program: str):
+    def __init__(self, program: str, inputs=[]):
         self.program = [int(value) for value in program.split(",")]
+        self.inputs = inputs
+        self.inputs.reverse()  # Since we're going to pop
         self.pointer = 0
 
     def _interpret(self) -> (int, List[bool]):
@@ -47,7 +49,10 @@ class Intcode(object):
                 self.program[dest] = a * b
             elif opcode == 3:  # Input
                 loc = self.next()
-                val = int(input(f"Line {self.pointer - 1}: Location {loc}? "))
+                try:
+                    val = self.inputs.pop()
+                except IndexError:
+                    val = int(input(f"Line {self.pointer - 1}: Location {loc}? "))
                 self.program[loc] = val
             elif opcode == 4:  # Output
                 val = self.get_value(self.next(), modes[0])

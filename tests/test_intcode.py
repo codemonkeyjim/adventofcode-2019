@@ -82,3 +82,5 @@ def test_longer_program(input_str, output_int):
     interpreter = Intcode(program)
     with mock.patch("builtins.input", side_effect=[input_str]):
         assert interpreter.execute() == output_int
+    interpreter = Intcode(program, inputs=[int(input_str)])
+    assert interpreter.execute() == output_int
