@@ -9,6 +9,7 @@ pytest = "*"
 mock = "*"
 
 [packages]
+networkx = "*"
 
 [requires]
 python_version = "3.7"
